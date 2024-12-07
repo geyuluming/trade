@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/kasiforce/trade/repository/db/model"
 	"gorm.io/gorm"
+	"github.com/kasiforce/trade/types"
 )
 
 type RefundRecord struct {
