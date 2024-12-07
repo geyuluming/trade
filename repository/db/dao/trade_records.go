@@ -105,8 +105,8 @@ func (c *TradeRecords) GetAllOrders(req types.ShowOrdersReq) (r []types.OrderInf
 		Joins("left join users as seller on seller.userID = trade_records.sellerID").
 		Joins("left join users as buyer on buyer.userID = trade_records.buyerID").
 		Joins("left join goods on goods.goodsID = trade_records.goodsID").
-		Joins("left join addresses as shippingAddr on shippingAddr.addressID = trade_records.shippingAddrID").
-		Joins("left join addresses as deliveryAddr on deliveryAddr.addressID = trade_records.deliveryAddrID").
+		Joins("left join address as shippingAddr on shippingAddr.addressID = trade_records.shippingAddrID").
+		Joins("left join address as deliveryAddr on deliveryAddr.addressID = trade_records.deliveryAddrID").
 		Offset((req.PageNum - 1) * req.PageSize).Limit(req.PageSize).
 		Select("trade_records.tradeID as TradeID," +
 			"trade_records.sellerID as SellerID," +
