@@ -25,10 +25,15 @@ func GetTrade_recordsService() *Trade_recordsService {
 // GetAllOrders 获取所有订单
 func (s *Trade_recordsService) GetAllOrders(ctx context.Context, req types.ShowOrdersReq) (resp interface{}, err error) {
 	u := dao.NewTradeRecords(ctx)
-	resp, err = u.GetAllOrders(req)
+	orders, total, err := u.GetAllOrders(req)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		return
+	}
+	resp = &types.OrderListResp{
+		OrderList: orders,
+		Total:     total,
+		PageNum:   req.PageNum,
 	}
 	return
 }
