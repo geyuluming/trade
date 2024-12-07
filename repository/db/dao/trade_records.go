@@ -219,3 +219,18 @@ func (c *TradeRecords) UpdateOrderStatus(req types.UpdateOrderStatusReq) (resp i
 	}
 	return
 }
+
+// UpdateOrderAddress 修改订单地址
+func (c *TradeRecords) UpdateOrderAddress(req types.UpdateOrderAddressReq) (resp interface{}, err error) {
+	// 更新订单地址
+	err = c.DB.Model(&model.TradeRecords{}).Where("tradeID = ?", req.ID).Updates(map[string]interface{}{
+		//"deliveryAddrID": req.Province + req.City + req.Area + req.DetailArea,
+		"deliveryAddrID": req.AddrID,
+	}).Error
+	if err != nil {
+		return
+	}
+
+	resp = types.UpdateOrderAddressResp{}
+	return
+}

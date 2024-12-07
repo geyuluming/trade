@@ -54,3 +54,26 @@ func UpdateOrderStatusHandler() gin.HandlerFunc {
 		c.JSON(http.StatusOK, ctl.RespSuccess(c, resp))
 	}
 }
+
+// UpdateOrderAddressHandler 修改订单地址
+func UpdateOrderAddressHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var req types.UpdateOrderAddressReq
+		if err := c.ShouldBindJSON(&req); err != nil {
+			util.LogrusObj.Infoln("Error occurred:", err)
+			c.JSON(http.StatusBadRequest, ErrorResponse(c, err))
+			return
+		}
+
+		ctx := c.Request.Context()
+		s := service.GetTrade_recordsService()
+		resp, err := s.UpdateOrderAddress(ctx, req)
+		if err != nil {
+			util.LogrusObj.Infoln("Error occurred:", err)
+			c.JSON(http.StatusInternalServerError, ErrorResponse(c, err))
+			return
+		}
+
+		c.JSON(http.StatusOK, ctl.RespSuccess(c, resp))
+	}
+}

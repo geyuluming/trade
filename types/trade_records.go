@@ -56,3 +56,17 @@ type UpdateOrderStatusReq struct {
 type UpdateOrderStatusResp struct {
 	Status string `json:"status"` // 更改后的订单状态
 }
+
+// UpdateOrderAddressReq 表示修改订单地址的请求
+type UpdateOrderAddressReq struct {
+	ID string `json:"id" binding:"required"` // 订单号
+	//Province   string `json:"province" binding:"required"`   // 省
+	//City       string `json:"city" binding:"required"`       // 市
+	//Area       string `json:"area" binding:"required"`       // 区
+	//DetailArea string `json:"detailArea" binding:"required"` // 详细地址
+	AddrID int `json:"addrID"`
+}
+
+// UpdateOrderAddressResp 表示修改订单地址的返回信息
+type UpdateOrderAddressResp struct {
+}
