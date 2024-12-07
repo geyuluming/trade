@@ -171,3 +171,45 @@ func (c *TradeRecords) GetAllOrders(req types.ShowOrdersReq) (r []types.OrderInf
 
 	return
 }
+
+// UpdateOrderStatus 修改订单状态
+func (c *TradeRecords) UpdateOrderStatus(req types.UpdateOrderStatusReq) (resp interface{}, err error) {
+	// 更新订单状态
+	err = c.DB.Model(&model.TradeRecords{}).Where("tradeID = ?", req.ID).Update("status", req.Status).Error
+	if err != nil {
+		return
+	}
+
+	// 如果存在退款理由，插入退款申诉
+	if req.RefundReason != "" {
+		refundComplaint := model.RefundComplaint{
+			TradeID: req.ID,
+			CReason: req.RefundReason,
+			CTime:   time.Now(),
+			CStatus: 0,
+		}
+		err = c.DB.Create(&refundComplaint).Error
+		if err != nil {
+			return
+		}
+	}
+
+	// 如果存在评价内容，创建评论
+	if req.Comment != "" {
+		comment := model.Comment{
+			GoodsID:        req.ID,
+			CommentatorID:  req.ID, // 假设评论人ID与订单ID相同
+			CommentContent: req.Comment,
+			CommentTime:    time.Now(),
+		}
+		err = c.DB.Create(&comment).Error
+		if err != nil {
+			return
+		}
+	}
+
+	resp = types.UpdateOrderStatusResp{
+		Status: req.Status,
+	}
+	return
+}

@@ -43,3 +43,16 @@ type ShowOrdersReq struct {
 	PageNum     int    `form:"pageNum" json:"pageNum"`   // 当前页码
 	PageSize    int    `form:"pageSize" json:"pageSize"` // 每页记录数
 }
+
+// UpdateOrderStatusReq 表示修改订单状态的请求
+type UpdateOrderStatusReq struct {
+	ID           int    `json:"id" binding:"required"`     // 订单编号
+	Status       string `json:"status" binding:"required"` // 目标状态
+	RefundReason string `json:"refundReason"`              // 退款理由
+	Comment      string `json:"comment"`                   // 评价内容
+}
+
+// UpdateOrderStatusResp 表示修改订单状态的返回信息
+type UpdateOrderStatusResp struct {
+	Status string `json:"status"` // 更改后的订单状态
+}

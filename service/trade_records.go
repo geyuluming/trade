@@ -37,3 +37,14 @@ func (s *Trade_recordsService) GetAllOrders(ctx context.Context, req types.ShowO
 	}
 	return
 }
+
+// UpdateOrderStatus 修改订单状态
+func (s *Trade_recordsService) UpdateOrderStatus(ctx context.Context, req types.UpdateOrderStatusReq) (resp interface{}, err error) {
+	u := dao.NewTradeRecords(ctx)
+	resp, err = u.UpdateOrderStatus(req)
+	if err != nil {
+		util.LogrusObj.Error(err)
+		return
+	}
+	return
+}
