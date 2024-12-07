@@ -120,12 +120,12 @@ func (c *TradeRecords) GetAllOrders(req types.ShowOrdersReq) (r []types.OrderInf
 			"trade_records.shippingCost as ShippingCost," +
 			"shippingAddr.province as ShippingProvince," +
 			"shippingAddr.city as ShippingCity," +
-			"shippingAddr.area as ShippingArea," +
-			"shippingAddr.detailArea as ShippingDetailArea," +
+			"shippingAddr.districts as ShippingArea," +
+			"shippingAddr.address as ShippingDetailArea," +
 			"deliveryAddr.province as DeliveryProvince," +
 			"deliveryAddr.city as DeliveryCity," +
-			"deliveryAddr.area as DeliveryArea," +
-			"deliveryAddr.detailArea as DeliveryDetailArea," +
+			"deliveryAddr.districts as DeliveryArea," +
+			"deliveryAddr.address as DeliveryDetailArea," +
 			"trade_records.orderTime as OrderTime," +
 			"trade_records.payTime as PayTime," +
 			"trade_records.shippingTime as ShippingTime," +
