@@ -50,6 +50,9 @@ func NewRouter() *gin.Engine {
 		//删除评论
 		v1.DELETE("/admin/comment/:id", api.DeleteCommentHandler())
 
+		//查询订单
+		v1.GET("/admin/order", api.GetAllOrdersHandler())
+
 		authed := v1.Group("/") // 需要登陆保护
 		authed.Use(middleware.AuthToken())
 		{
