@@ -196,9 +196,15 @@ func (c *TradeRecords) UpdateOrderStatus(req types.UpdateOrderStatusReq) (resp i
 
 	// 如果存在评价内容，创建评论
 	if req.Comment != "" {
+		var tradeRecord model.TradeRecords
+		err = c.DB.Where("tradeID = ?", req.ID).First(&tradeRecord).Error
+		if err != nil {
+			return
+		}
+
 		comment := model.Comment{
-			GoodsID:        req.ID,
-			CommentatorID:  req.ID, // 假设评论人ID与订单ID相同
+			GoodsID:        tradeRecord.GoodsID,
+			CommentatorID:  tradeRecord.BuyerID,
 			CommentContent: req.Comment,
 			CommentTime:    time.Now(),
 		}
