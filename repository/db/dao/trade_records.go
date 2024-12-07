@@ -75,10 +75,38 @@ func (c *TradeRecords) GetAllOrders(req types.ShowOrdersReq) (r []types.OrderInf
 		return
 	}
 
+	var orders []struct {
+		TradeID            int
+		SellerID           int
+		BuyerID            int
+		SellerName         string
+		BuyerName          string
+		GoodsID            int
+		GoodsName          string
+		Price              float64
+		DeliveryMethod     string
+		ShippingCost       float64
+		ShippingProvince   string
+		ShippingCity       string
+		ShippingArea       string
+		ShippingDetailArea string
+		DeliveryProvince   string
+		DeliveryCity       string
+		DeliveryArea       string
+		DeliveryDetailArea string
+		OrderTime          time.Time
+		PayTime            time.Time
+		ShippingTime       time.Time
+		TurnoverTime       time.Time
+		Status             string
+	}
+
 	err = query.
 		Joins("left join users as seller on seller.userID = trade_records.sellerID").
 		Joins("left join users as buyer on buyer.userID = trade_records.buyerID").
 		Joins("left join goods on goods.goodsID = trade_records.goodsID").
+		Joins("left join addresses as shippingAddr on shippingAddr.addressID = trade_records.shippingAddrID").
+		Joins("left join addresses as deliveryAddr on deliveryAddr.addressID = trade_records.deliveryAddrID").
 		Offset((req.PageNum - 1) * req.PageSize).Limit(req.PageSize).
 		Select("trade_records.tradeID as TradeID," +
 			"trade_records.sellerID as SellerID," +
@@ -90,14 +118,56 @@ func (c *TradeRecords) GetAllOrders(req types.ShowOrdersReq) (r []types.OrderInf
 			"trade_records.turnoverAmount as Price," +
 			"trade_records.payMethod as DeliveryMethod," +
 			"trade_records.shippingCost as ShippingCost," +
-			"trade_records.shippingAddress as ShippingAddress," +
-			"trade_records.deliveryAddress as SenderAddress," +
+			"shippingAddr.province as ShippingProvince," +
+			"shippingAddr.city as ShippingCity," +
+			"shippingAddr.area as ShippingArea," +
+			"shippingAddr.detailArea as ShippingDetailArea," +
+			"deliveryAddr.province as DeliveryProvince," +
+			"deliveryAddr.city as DeliveryCity," +
+			"deliveryAddr.area as DeliveryArea," +
+			"deliveryAddr.detailArea as DeliveryDetailArea," +
 			"trade_records.orderTime as OrderTime," +
 			"trade_records.payTime as PayTime," +
 			"trade_records.shippingTime as ShippingTime," +
 			"trade_records.turnoverTime as TurnoverTime," +
 			"trade_records.status as Status").
-		Find(&r).Error
+		Scan(&orders).Error
+
+	if err != nil {
+		return
+	}
+
+	for _, order := range orders {
+		r = append(r, types.OrderInfo{
+			TradeID:        order.TradeID,
+			SellerID:       order.SellerID,
+			BuyerID:        order.BuyerID,
+			SellerName:     order.SellerName,
+			BuyerName:      order.BuyerName,
+			GoodsID:        order.GoodsID,
+			GoodsName:      order.GoodsName,
+			Price:          order.Price,
+			DeliveryMethod: order.DeliveryMethod,
+			ShippingCost:   order.ShippingCost,
+			SenderAddress: types.AddressDetail{
+				Province:   order.DeliveryProvince,
+				City:       order.DeliveryCity,
+				Area:       order.DeliveryArea,
+				DetailArea: order.DeliveryDetailArea,
+			},
+			ShippingAddress: types.AddressDetail{
+				Province:   order.ShippingProvince,
+				City:       order.ShippingCity,
+				Area:       order.ShippingArea,
+				DetailArea: order.ShippingDetailArea,
+			},
+			OrderTime:    order.OrderTime,
+			PayTime:      order.PayTime,
+			ShippingTime: order.ShippingTime,
+			TurnoverTime: order.TurnoverTime,
+			Status:       order.Status,
+		})
+	}
 
 	return
 }
