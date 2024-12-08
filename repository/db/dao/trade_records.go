@@ -174,8 +174,38 @@ func (c *TradeRecords) GetAllOrders(req types.ShowOrdersReq) (r []types.OrderInf
 
 // UpdateOrderStatus 修改订单状态
 func (c *TradeRecords) UpdateOrderStatus(req types.UpdateOrderStatusReq) (resp interface{}, err error) {
+	// 加载北京时区
+	location, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		return nil, err
+	}
 	// 更新订单状态
-	err = c.DB.Model(&model.TradeRecords{}).Where("tradeID = ?", req.ID).Update("status", req.Status).Error
+	if req.Status == "未发货" {
+		updateData := map[string]interface{}{
+			"Status":  req.Status,
+			"payTime": time.Now().In(location),
+		}
+		err = c.DB.Model(&model.TradeRecords{}).Where("tradeID = ?", req.ID).Updates(updateData).
+			Error
+	} else if req.Status == "已发货" {
+		updateData := map[string]interface{}{
+			"Status":       req.Status,
+			"ShippingTime": time.Now().In(location),
+		}
+		err = c.DB.Model(&model.TradeRecords{}).Where("tradeID = ?", req.ID).Updates(updateData).
+			Error
+	} else if req.Status == "交易完成" || req.Status == "已取消" || req.Status == "已退款" {
+		updateData := map[string]interface{}{
+			"Status":       req.Status,
+			"turnoverTime": time.Now().In(location),
+		}
+		err = c.DB.Model(&model.TradeRecords{}).Where("tradeID = ?", req.ID).Updates(updateData).
+			Error
+	} else {
+		err = c.DB.Model(&model.TradeRecords{}).Where("tradeID = ?", req.ID).Update("status", req.Status).
+			Error
+	}
+
 	if err != nil {
 		return
 	}
@@ -206,7 +236,7 @@ func (c *TradeRecords) UpdateOrderStatus(req types.UpdateOrderStatusReq) (resp i
 			GoodsID:        tradeRecord.GoodsID,
 			CommentatorID:  tradeRecord.BuyerID,
 			CommentContent: req.Comment,
-			CommentTime:    time.Now(),
+			CommentTime:    time.Now().In(location),
 		}
 		err = c.DB.Create(&comment).Error
 		if err != nil {
@@ -246,7 +276,7 @@ func (c *TradeRecords) CreateOrder(req types.CreateOrderReq) (resp interface{}, 
 		ShippingAddrID: req.SenderAddrID,
 		DeliveryAddrID: req.ShippingAddrID,
 		OrderTime:      time.Now(),
-		Status:         "未支付",
+		Status:         "未付款",
 	}
 	switch req.DeliveryMethod {
 	case "无需快递":
