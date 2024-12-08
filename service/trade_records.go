@@ -108,3 +108,19 @@ func (s *Trade_recordsService) GetMySoldOrders(ctx *gin.Context, req types.GetMy
 	}
 	return
 }
+
+// GetPendingRefunds 查询所有待退货的商品
+func (s *Trade_recordsService) GetPendingRefunds(ctx *gin.Context, req types.GetPendingRefundsReq) (resp interface{}, err error) {
+	u := dao.NewTradeRecords(ctx)
+	refunds, total, err := u.GetPendingRefunds(req)
+	if err != nil {
+		util.LogrusObj.Error(err)
+		return
+	}
+	resp = &types.GetPendingRefundsResp{
+		Total:      total,
+		PageNum:    req.PageNum,
+		RefundList: refunds,
+	}
+	return
+}

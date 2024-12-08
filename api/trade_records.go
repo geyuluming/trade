@@ -145,3 +145,25 @@ func GetMySoldOrdersHandler() gin.HandlerFunc {
 		c.JSON(http.StatusOK, ctl.RespSuccess(c, resp))
 	}
 }
+
+// GetPendingRefundsHandler 查询所有待退货的商品
+func GetPendingRefundsHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var req types.GetPendingRefundsReq
+		if err := c.ShouldBindQuery(&req); err != nil {
+			util.LogrusObj.Infoln("Error occurred:", err)
+			c.JSON(http.StatusBadRequest, ErrorResponse(c, err))
+			return
+		}
+
+		s := service.GetTrade_recordsService()
+		resp, err := s.GetPendingRefunds(c, req)
+		if err != nil {
+			util.LogrusObj.Infoln("Error occurred:", err)
+			c.JSON(http.StatusInternalServerError, ErrorResponse(c, err))
+			return
+		}
+
+		c.JSON(http.StatusOK, ctl.RespSuccess(c, resp))
+	}
+}

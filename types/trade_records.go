@@ -124,3 +124,37 @@ type AddressInfo struct {
 	Tel        string `json:"tel"`        // 联系电话
 	Name       string `json:"name"`       // 联系人
 }
+
+// GetPendingRefundsReq 表示查询所有待退货的商品的请求
+type GetPendingRefundsReq struct {
+	SearchQuery string `form:"searchQuery" json:"searchQuery"` // 搜索框的输入信息，此处为订单ID
+	PageNum     int    `form:"pageNum" json:"pageNum"`         // 当前页数
+	PageSize    int    `form:"pageSize" json:"pageSize"`       // 每页显示条数
+}
+
+// GetPendingRefundsResp 表示查询所有待退货的商品的返回信息
+type GetPendingRefundsResp struct {
+	Total      int64        `json:"total"`      // 订单总数
+	PageNum    int          `json:"pageNum"`    // 当前页数
+	RefundList []RefundInfo `json:"refundList"` // 退款列表
+}
+
+// GetRefundInfo RefundInfo 表示退款信息
+type GetRefundInfo struct {
+	TradeID      int     `json:"tradeID"`      // 订单ID
+	GoodsName    string  `json:"goodsName"`    // 商品名称
+	Price        float64 `json:"price"`        // 价格
+	ShippingCost float64 `json:"shippingCost"` // 运费
+	SellerName   string  `json:"sellerName"`   // 卖家昵称
+	SellerReason string  `json:"sellerReason"` // 卖家拒绝退款理由
+	BuyerName    string  `json:"buyerName"`    // 买家昵称
+	BuyerReason  string  `json:"buyerReason"`  // 买家退款理由
+	SellerID     int     `json:"sellerID"`     // 卖家ID
+	BuyerID      int     `json:"buyerID"`      // 买家ID
+	OrderTime    string  `json:"orderTime"`    // 下单时间
+	PayTime      string  `json:"payTime"`      // 支付时间
+	RefundTime   string  `json:"refundTime"`   // 退款申请时间
+	ShippingTime string  `json:"shippingTime"` // 发货时间
+	TurnoverTime string  `json:"turnoverTime"` // 成交时间
+	Status       string  `json:"status"`       // 订单状态
+}
