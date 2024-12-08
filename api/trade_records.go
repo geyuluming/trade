@@ -111,9 +111,9 @@ func GetMyOrdersHandler() gin.HandlerFunc {
 			return
 		}
 
-		ctx := c.Request.Context()
+		//ctx := c.Request.Context()
 		s := service.GetTrade_recordsService()
-		resp, err := s.GetMyOrders(ctx, req)
+		resp, err := s.GetMyOrders(c, req)
 		if err != nil {
 			util.LogrusObj.Infoln("Error occurred:", err)
 			c.JSON(http.StatusInternalServerError, ErrorResponse(c, err))
