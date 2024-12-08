@@ -265,7 +265,7 @@ func (c *TradeRecords) UpdateOrderAddress(req types.UpdateOrderAddressReq) (err 
 }
 
 // CreateOrder 生成订单
-func (c *TradeRecords) CreateOrder(req types.CreateOrderReq) (resp interface{}, err error) {
+func (c *TradeRecords) CreateOrder(req types.CreateOrderReq, id int) (resp interface{}, err error) {
 
 	// 创建订单
 	order := model.TradeRecords{
@@ -277,6 +277,7 @@ func (c *TradeRecords) CreateOrder(req types.CreateOrderReq) (resp interface{}, 
 		DeliveryAddrID: req.ShippingAddrID,
 		OrderTime:      time.Now(),
 		Status:         "未付款",
+		BuyerID:        id,
 	}
 	switch req.DeliveryMethod {
 	case "无需快递":

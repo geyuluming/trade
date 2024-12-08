@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"github.com/gin-gonic/gin"
 	"sync"
 	//"github.com/gin-gonic/gin"
 	"github.com/kasiforce/trade/pkg/util"
@@ -50,9 +51,10 @@ func (s *Trade_recordsService) UpdateOrderStatus(ctx context.Context, req types.
 }
 
 // UpdateOrderAddress 修改订单地址
-func (s *Trade_recordsService) UpdateOrderAddress(ctx context.Context, req types.UpdateOrderAddressReq) (resp interface{}, err error) {
+func (s *Trade_recordsService) UpdateOrderAddress(ctx *gin.Context, req types.UpdateOrderAddressReq) (resp interface{}, err error) {
+	id := ctx.GetInt("id")
 	u := dao.NewTradeRecords(ctx)
-	err = u.UpdateOrderAddress(req)
+	err = u.UpdateOrderAddress(req, id)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		return
