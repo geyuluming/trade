@@ -123,3 +123,25 @@ func GetMyOrdersHandler() gin.HandlerFunc {
 		c.JSON(http.StatusOK, ctl.RespSuccess(c, resp))
 	}
 }
+
+// GetMySoldOrdersHandler 获取我卖出的订单
+func GetMySoldOrdersHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var req types.GetMyOrdersReq
+		if err := c.ShouldBindQuery(&req); err != nil {
+			util.LogrusObj.Infoln("Error occurred:", err)
+			c.JSON(http.StatusBadRequest, ErrorResponse(c, err))
+			return
+		}
+
+		s := service.GetTrade_recordsService()
+		resp, err := s.GetMySoldOrders(c, req)
+		if err != nil {
+			util.LogrusObj.Infoln("Error occurred:", err)
+			c.JSON(http.StatusInternalServerError, ErrorResponse(c, err))
+			return
+		}
+
+		c.JSON(http.StatusOK, ctl.RespSuccess(c, resp))
+	}
+}

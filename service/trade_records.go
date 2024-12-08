@@ -92,3 +92,19 @@ func (s *Trade_recordsService) GetMyOrders(ctx *gin.Context, req types.GetMyOrde
 	}
 	return
 }
+
+// GetMySoldOrders 获取我卖出的订单
+func (s *Trade_recordsService) GetMySoldOrders(ctx *gin.Context, req types.GetMyOrdersReq) (resp interface{}, err error) {
+	id := ctx.GetInt("id")
+	u := dao.NewTradeRecords(ctx)
+	orders, total, err := u.GetMySoldOrders(req, id)
+	if err != nil {
+		util.LogrusObj.Error(err)
+		return
+	}
+	resp = &types.GetMyOrdersResp{
+		Total:     total,
+		OrderList: orders,
+	}
+	return
+}
