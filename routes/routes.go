@@ -87,7 +87,7 @@ func NewRouter() *gin.Engine {
 			//修改订单地址
 			authed.POST("/orders/address/:id", api.UpdateOrderAddressHandler())
 			//生成订单
-			authed.POST("/createorder", api.CreateOrderHandler())
+			authed.POST("/createOrder", api.CreateOrderHandler())
 		}
 	}
 	return router
