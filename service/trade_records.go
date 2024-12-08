@@ -51,10 +51,9 @@ func (s *Trade_recordsService) UpdateOrderStatus(ctx context.Context, req types.
 }
 
 // UpdateOrderAddress 修改订单地址
-func (s *Trade_recordsService) UpdateOrderAddress(ctx *gin.Context, req types.UpdateOrderAddressReq) (resp interface{}, err error) {
-	id := ctx.GetInt("id")
+func (s *Trade_recordsService) UpdateOrderAddress(ctx context.Context, req types.UpdateOrderAddressReq) (resp interface{}, err error) {
 	u := dao.NewTradeRecords(ctx)
-	err = u.UpdateOrderAddress(req, id)
+	err = u.UpdateOrderAddress(req)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		return
@@ -67,9 +66,10 @@ func (s *Trade_recordsService) UpdateOrderAddress(ctx *gin.Context, req types.Up
 }
 
 // CreateOrder 生成订单
-func (s *Trade_recordsService) CreateOrder(ctx context.Context, req types.CreateOrderReq) (resp interface{}, err error) {
+func (s *Trade_recordsService) CreateOrder(ctx *gin.Context, req types.CreateOrderReq) (resp interface{}, err error) {
+	id := ctx.GetInt("id")
 	u := dao.NewTradeRecords(ctx)
-	resp, err = u.CreateOrder(req)
+	resp, err = u.CreateOrder(req, id)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		return
