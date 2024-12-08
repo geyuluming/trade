@@ -91,8 +91,8 @@ type GetMyOrdersReq struct {
 
 // GetMyOrdersResp 表示获取我买到的订单的返回信息
 type GetMyOrdersResp struct {
-	Total     int         `json:"total"`     // 订单总数
-	OrderList []OrderInfo `json:"orderList"` // 订单列表
+	Total     int64            `json:"total"`     // 订单总数
+	OrderList []GetMyOrderInfo `json:"orderList"` // 订单列表
 }
 
 // GetMyOrderInfo GetMyOrderInfo 表示订单信息
