@@ -134,9 +134,9 @@ type GetPendingRefundsReq struct {
 
 // GetPendingRefundsResp 表示查询所有待退货的商品的返回信息
 type GetPendingRefundsResp struct {
-	Total      int64        `json:"total"`      // 订单总数
-	PageNum    int          `json:"pageNum"`    // 当前页数
-	RefundList []RefundInfo `json:"refundList"` // 退款列表
+	Total      int64           `json:"total"`      // 订单总数
+	PageNum    int             `json:"pageNum"`    // 当前页数
+	RefundList []GetRefundInfo `json:"refundList"` // 退款列表
 }
 
 // GetRefundInfo RefundInfo 表示退款信息
