@@ -95,7 +95,7 @@ type GetMyOrdersResp struct {
 	OrderList []OrderInfo `json:"orderList"` // 订单列表
 }
 
-// GetMyOrderInfo OrderInfo 表示订单信息
+// GetMyOrderInfo GetMyOrderInfo 表示订单信息
 type GetMyOrderInfo struct {
 	TradeID         int         `json:"tradeID"`         // 订单ID
 	SellerID        int         `json:"sellerID"`        // 卖家ID
