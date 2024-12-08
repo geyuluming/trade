@@ -76,3 +76,14 @@ func (s *Trade_recordsService) CreateOrder(ctx *gin.Context, req types.CreateOrd
 	}
 	return
 }
+
+// GetMyOrders 获取我买到的订单
+func (s *Trade_recordsService) GetMyOrders(ctx context.Context, req types.GetMyOrdersReq) (resp interface{}, err error) {
+	u := dao.NewTradeRecords(ctx)
+	resp, err = u.GetMyOrders(req)
+	if err != nil {
+		util.LogrusObj.Error(err)
+		return
+	}
+	return
+}
