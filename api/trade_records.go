@@ -88,9 +88,9 @@ func CreateOrderHandler() gin.HandlerFunc {
 			return
 		}
 
-		ctx := c.Request.Context()
+		//ctx := c.Request.Context()
 		s := service.GetTrade_recordsService()
-		resp, err := s.CreateOrder(ctx, req)
+		resp, err := s.CreateOrder(c, req)
 		if err != nil {
 			util.LogrusObj.Infoln("Error occurred:", err)
 			c.JSON(http.StatusInternalServerError, ErrorResponse(c, err))
