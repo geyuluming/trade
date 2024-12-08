@@ -234,3 +234,56 @@ func (c *TradeRecords) UpdateOrderAddress(req types.UpdateOrderAddressReq) (resp
 	resp = types.UpdateOrderAddressResp{}
 	return
 }
+
+// CreateOrder 生成订单
+func (c *TradeRecords) CreateOrder(req types.CreateOrderReq) (resp interface{}, err error) {
+	// 创建发货地址
+	senderAddress := model.Address{
+		Province:   req.SenderAddress.Province,
+		City:       req.SenderAddress.City,
+		Area:       req.SenderAddress.Area,
+		DetailArea: req.SenderAddress.DetailArea,
+		Name:       req.SenderAddress.Name,
+		Tel:        req.SenderAddress.Tel,
+	}
+	err = c.DB.Create(&senderAddress).Error
+	if err != nil {
+		return
+	}
+
+	// 创建收货地址
+	shippingAddress := model.Address{
+		Province:   req.ShippingAddress.Province,
+		City:       req.ShippingAddress.City,
+		Area:       req.ShippingAddress.Area,
+		DetailArea: req.ShippingAddress.DetailArea,
+		Name:       req.ShippingAddress.Name,
+		Tel:        req.ShippingAddress.Tel,
+	}
+	err = c.DB.Create(&shippingAddress).Error
+	if err != nil {
+		return
+	}
+
+	// 创建订单
+	order := model.TradeRecords{
+		SellerID:       req.SellerID,
+		GoodsID:        req.GoodsID,
+		TurnoverAmount: req.Price,
+		PayMethod:      req.DeliveryMethod,
+		ShippingCost:   req.ShippingCost,
+		ShippingAddrID: senderAddress.AddressID,
+		DeliveryAddrID: shippingAddress.AddressID,
+		OrderTime:      time.Now(),
+		Status:         "未发货",
+	}
+	err = c.DB.Create(&order).Error
+	if err != nil {
+		return
+	}
+
+	resp = types.CreateOrderResp{
+		TradeID: order.TradeID,
+	}
+	return
+}

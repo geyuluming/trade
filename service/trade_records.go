@@ -59,3 +59,14 @@ func (s *Trade_recordsService) UpdateOrderAddress(ctx context.Context, req types
 	}
 	return
 }
+
+// CreateOrder 生成订单
+func (s *Trade_recordsService) CreateOrder(ctx context.Context, req types.CreateOrderReq) (resp interface{}, err error) {
+	u := dao.NewTradeRecords(ctx)
+	resp, err = u.CreateOrder(req)
+	if err != nil {
+		util.LogrusObj.Error(err)
+		return
+	}
+	return
+}

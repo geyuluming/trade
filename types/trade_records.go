@@ -70,3 +70,29 @@ type UpdateOrderAddressReq struct {
 // UpdateOrderAddressResp 表示修改订单地址的返回信息
 type UpdateOrderAddressResp struct {
 }
+
+// CreateOrderReq 表示生成订单的请求
+type CreateOrderReq struct {
+	SellerID        int           `json:"sellerID" binding:"required"`        // 卖家ID
+	GoodsID         int           `json:"goodsID" binding:"required"`         // 商品ID
+	Price           float64       `json:"price" binding:"required"`           // 价格
+	DeliveryMethod  string        `json:"deliveryMethod" binding:"required"`  // 交易方式
+	ShippingCost    float64       `json:"shippingCost" binding:"required"`    // 运费
+	SenderAddress   AddressDetail `json:"senderAddress" binding:"required"`   // 发货地址
+	ShippingAddress AddressDetail `json:"shippingAddress" binding:"required"` // 收货地址
+}
+
+// AddressInfo 表示地址信息
+type AddressInfo struct {
+	Province   string `json:"province" binding:"required"`   // 省
+	City       string `json:"city" binding:"required"`       // 市
+	Area       string `json:"area" binding:"required"`       // 区
+	DetailArea string `json:"detailArea" binding:"required"` // 详细地址
+	Name       string `json:"name" binding:"required"`       // 联系人
+	Tel        string `json:"tel" binding:"required"`        // 联系电话
+}
+
+// CreateOrderResp 表示生成订单的返回信息
+type CreateOrderResp struct {
+	TradeID int `json:"tradeID"` // 订单ID
+}
