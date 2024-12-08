@@ -59,7 +59,7 @@ type UpdateOrderStatusResp struct {
 
 // UpdateOrderAddressReq 表示修改订单地址的请求
 type UpdateOrderAddressReq struct {
-	ID string `json:"id" binding:"required"` // 订单号
+	ID   int  `json:"id" binding:"required"` // 订单号
 	//Province   string `json:"province" binding:"required"`   // 省
 	//City       string `json:"city" binding:"required"`       // 市
 	//Area       string `json:"area" binding:"required"`       // 区
