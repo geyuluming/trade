@@ -360,10 +360,10 @@ func (c *TradeRecords) GetMyOrdersPurchased(req types.GetMyOrdersReq, id int) (r
 			"deliveryAddr.address as DeliveryDetailArea," +
 			"deliveryAddr.tel as DeliveryTel," +
 			"deliveryAddr.receiver as DeliveryName," +
-			"COALESCE(trade_records.orderTime, '') as OrderTime," +
-			"COALESCE(trade_records.payTime, '') as PayTime," +
-			"COALESCE(trade_records.shippingTime, '') as ShippingTime," +
-			"COALESCE(trade_records.turnoverTime, '') as TurnoverTime," +
+			"trade_records.orderTime as OrderTime," +
+			"trade_records.payTime as PayTime," +
+			"trade_records.shippingTime as ShippingTime," +
+			"trade_records.turnoverTime as TurnoverTime," +
 			"trade_records.status as Status").
 		Scan(&orders).Error
 
@@ -397,10 +397,10 @@ func (c *TradeRecords) GetMyOrdersPurchased(req types.GetMyOrdersReq, id int) (r
 				Tel:        order.ShippingTel,
 				Name:       order.ShippingName,
 			},
-			OrderTime:    order.OrderTime.Format("2006-01-02 15:04:05"),
-			PayTime:      order.PayTime.Format("2006-01-02 15:04:05"),
-			ShippingTime: order.ShippingTime.Format("2006-01-02 15:04:05"),
-			TurnoverTime: order.TurnoverTime.Format("2006-01-02 15:04:05"),
+			OrderTime:    order.OrderTime,
+			PayTime:      order.PayTime,
+			ShippingTime: order.ShippingTime,
+			TurnoverTime: order.TurnoverTime,
 			Status:       order.Status,
 		})
 	}
