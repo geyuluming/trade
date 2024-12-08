@@ -175,10 +175,8 @@ func (c *TradeRecords) GetAllOrders(req types.ShowOrdersReq) (r []types.OrderInf
 // UpdateOrderStatus 修改订单状态
 func (c *TradeRecords) UpdateOrderStatus(req types.UpdateOrderStatusReq) (resp interface{}, err error) {
 	// 加载北京时区
-	location, err := time.LoadLocation("Asia/Shanghai")
-	if err != nil {
-		return nil, err
-	}
+	location := time.FixedZone("Asia/Shanghai", 8*60*60)
+
 	// 更新订单状态
 	if req.Status == "未发货" {
 		updateData := map[string]interface{}{
