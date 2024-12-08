@@ -397,10 +397,10 @@ func (c *TradeRecords) GetMyOrdersPurchased(req types.GetMyOrdersReq, id int) (r
 				Tel:        order.ShippingTel,
 				Name:       order.ShippingName,
 			},
-			OrderTime:    order.OrderTime,
-			PayTime:      order.PayTime,
-			ShippingTime: order.ShippingTime,
-			TurnoverTime: order.TurnoverTime,
+			OrderTime:    order.OrderTime.Format("2006-01-02 15:04:05"),
+			PayTime:      order.PayTime.Format("2006-01-02 15:04:05"),
+			ShippingTime: order.ShippingTime.Format("2006-01-02 15:04:05"),
+			TurnoverTime: order.TurnoverTime.Format("2006-01-02 15:04:05"),
 			Status:       order.Status,
 		})
 	}
