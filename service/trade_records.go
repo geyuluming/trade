@@ -52,12 +52,16 @@ func (s *Trade_recordsService) UpdateOrderStatus(ctx context.Context, req types.
 // UpdateOrderAddress 修改订单地址
 func (s *Trade_recordsService) UpdateOrderAddress(ctx context.Context, req types.UpdateOrderAddressReq) (resp interface{}, err error) {
 	u := dao.NewTradeRecords(ctx)
-	resp, err = u.UpdateOrderAddress(req)
+	err = u.UpdateOrderAddress(req)
 	if err != nil {
 		util.LogrusObj.Error(err)
 		return
 	}
-	return
+	// 返回一个对象类型的响应
+	resp = map[string]string{
+		"message": "OrderAddress updated successfully",
+	}
+	return resp, nil
 }
 
 // CreateOrder 生成订单

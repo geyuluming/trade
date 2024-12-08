@@ -221,7 +221,7 @@ func (c *TradeRecords) UpdateOrderStatus(req types.UpdateOrderStatusReq) (resp i
 }
 
 // UpdateOrderAddress 修改订单地址
-func (c *TradeRecords) UpdateOrderAddress(req types.UpdateOrderAddressReq) (resp interface{}, err error) {
+func (c *TradeRecords) UpdateOrderAddress(req types.UpdateOrderAddressReq) (err error) {
 	// 更新订单地址
 	err = c.DB.Model(&model.TradeRecords{}).Where("tradeID = ?", req.ID).Updates(map[string]interface{}{
 		//"deliveryAddrID": req.Province + req.City + req.Area + req.DetailArea,
@@ -231,51 +231,30 @@ func (c *TradeRecords) UpdateOrderAddress(req types.UpdateOrderAddressReq) (resp
 		return
 	}
 
-	resp = types.UpdateOrderAddressResp{}
 	return
 }
 
 // CreateOrder 生成订单
 func (c *TradeRecords) CreateOrder(req types.CreateOrderReq) (resp interface{}, err error) {
-	// 创建发货地址
-	senderAddress := model.Address{
-		Province:   req.SenderAddress.Province,
-		City:       req.SenderAddress.City,
-		Area:       req.SenderAddress.Area,
-		DetailArea: req.SenderAddress.DetailArea,
-		Name:       req.SenderAddress.Name,
-		Tel:        req.SenderAddress.Tel,
-	}
-	err = c.DB.Create(&senderAddress).Error
-	if err != nil {
-		return
-	}
-
-	// 创建收货地址
-	shippingAddress := model.Address{
-		Province:   req.ShippingAddress.Province,
-		City:       req.ShippingAddress.City,
-		Area:       req.ShippingAddress.Area,
-		DetailArea: req.ShippingAddress.DetailArea,
-		Name:       req.ShippingAddress.Name,
-		Tel:        req.ShippingAddress.Tel,
-	}
-	err = c.DB.Create(&shippingAddress).Error
-	if err != nil {
-		return
-	}
 
 	// 创建订单
 	order := model.TradeRecords{
 		SellerID:       req.SellerID,
 		GoodsID:        req.GoodsID,
 		TurnoverAmount: req.Price,
-		PayMethod:      req.DeliveryMethod,
 		ShippingCost:   req.ShippingCost,
-		ShippingAddrID: senderAddress.AddressID,
-		DeliveryAddrID: shippingAddress.AddressID,
+		ShippingAddrID: req.SenderAddrID,
+		DeliveryAddrID: req.shippingAddrID,
 		OrderTime:      time.Now(),
-		Status:         "未发货",
+		Status:         "未支付",
+	}
+	switch req.DeliveryMethod {
+	case "无需快递":
+		order.PayMethod = 0
+	case "自提":
+		order.PayMethod = 1
+	case "邮寄":
+		order.PayMethod = 2
 	}
 	err = c.DB.Create(&order).Error
 	if err != nil {
@@ -285,5 +264,6 @@ func (c *TradeRecords) CreateOrder(req types.CreateOrderReq) (resp interface{}, 
 	resp = types.CreateOrderResp{
 		TradeID: order.TradeID,
 	}
-	return
+
+	return resp, nil
 }
