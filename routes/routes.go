@@ -64,9 +64,6 @@ func NewRouter() *gin.Engine {
 		//查询订单
 		v1.GET("/admin/order", api.GetAllOrdersHandler())
 
-		//查询所有待退货的商品
-		v1.GET("/admin/afterSale", api.GetPendingRefundsHandler())
-
 		authed := v1.Group("/") // 需要登陆保护
 		authed.Use(middleware.AuthToken())
 		{
