@@ -350,16 +350,16 @@ func (c *TradeRecords) GetMyOrdersPurchased(req types.GetMyOrdersReq, id int) (r
 			"trade_records.shippingCost as ShippingCost," +
 			"shippingAddr.province as ShippingProvince," +
 			"shippingAddr.city as ShippingCity," +
-			"shippingAddr.area as ShippingArea," +
-			"shippingAddr.detailArea as ShippingDetailArea," +
+			"shippingAddr.districts as ShippingArea," +
+			"shippingAddr.address as ShippingDetailArea," +
 			"shippingAddr.tel as ShippingTel," +
-			"shippingAddr.name as ShippingName," +
+			"shippingAddr.receiver as ShippingName," +
 			"deliveryAddr.province as DeliveryProvince," +
 			"deliveryAddr.city as DeliveryCity," +
-			"deliveryAddr.area as DeliveryArea," +
-			"deliveryAddr.detailArea as DeliveryDetailArea," +
+			"deliveryAddr.districts as DeliveryArea," +
+			"deliveryAddr.address as DeliveryDetailArea," +
 			"deliveryAddr.tel as DeliveryTel," +
-			"deliveryAddr.name as DeliveryName," +
+			"deliveryAddr.receiver as DeliveryName," +
 			"COALESCE(trade_records.orderTime, '') as OrderTime," +
 			"COALESCE(trade_records.payTime, '') as PayTime," +
 			"COALESCE(trade_records.shippingTime, '') as ShippingTime," +
