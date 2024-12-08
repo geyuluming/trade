@@ -244,7 +244,7 @@ func (c *TradeRecords) CreateOrder(req types.CreateOrderReq) (resp interface{}, 
 		TurnoverAmount: req.Price,
 		ShippingCost:   req.ShippingCost,
 		ShippingAddrID: req.SenderAddrID,
-		DeliveryAddrID: req.shippingAddrID,
+		DeliveryAddrID: req.ShippingAddrID,
 		OrderTime:      time.Now(),
 		Status:         "未支付",
 	}
