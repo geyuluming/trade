@@ -73,4 +73,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/kasiforce/trade => github.com/geyuluming/trade v0.0.0-20241208114426-aafef9c1cf60
+replace github.com/kasiforce/trade => github.com/geyuluming/trade v0.0.0-20241209153412-dc826bcbaf4b
