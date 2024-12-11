@@ -190,7 +190,7 @@ func (c *TradeRecords) UpdateOrderStatus(req types.UpdateOrderStatusReq) (resp i
 			"status":       req.Status,
 			"shippingTime": time.Now().In(location),
 		}
-		err = c.DB.Model(&model.TradeRecords{}).Where("tradeID = ? AND (ShippingTime IS NULL OR ShippingTime = '')", req.ID).Updates(updateData).
+		err = c.DB.Model(&model.TradeRecords{}).Where("tradeID = ? AND ShippingTime IS NULL ", req.ID).Updates(updateData).
 			Error
 	} else if req.Status == "交易完成" || req.Status == "已取消" || req.Status == "已退款" {
 		updateData := map[string]interface{}{
