@@ -122,9 +122,7 @@ func AlipayNotifyHandler(c *gin.Context) {
 			util.LogrusObj.Error(err)
 			return
 		}
-
+		// 返回支付宝成功响应
+		c.JSON(http.StatusOK, ctl.RespSuccess(c, resp))
 	}
-
-	// 返回支付宝成功响应
-	c.JSON(http.StatusOK, ctl.RespSuccess(c, resp))
 }
