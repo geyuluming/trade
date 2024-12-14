@@ -99,6 +99,10 @@ func NewRouter() *gin.Engine {
 			authed.POST("/createOrder", api.CreateOrderHandler())
 			//获取订单详情（以及支付结果）
 			authed.GET("/order/:id", api.GetOrderDetailHandler())
+			//支付宝支付
+			authed.GET("/pay/aliPay", api.AlipayHandler())
+			//支付宝回调接口
+			authed.POST("/alipay/notify", api.AlipayNotifyHandler())
 
 			//获取-我买到的
 			authed.GET("/orders/purchased", api.GetMyOrdersHandler())
