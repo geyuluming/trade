@@ -14,7 +14,7 @@ const (
 	kServerDomain = ""
 )
 
-func init() {
+func InitAlipay() {
 	var err error
 	Client, err = alipay.New(kAppId, kPrivateKey, false) // false表示使用沙盒环境
 	if err != nil {
