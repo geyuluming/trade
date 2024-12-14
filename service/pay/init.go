@@ -4,7 +4,7 @@ import (
 	"github.com/smartwalle/alipay/v3"
 )
 
-var client *alipay.Client
+var Client *alipay.Client
 
 const (
 	kAppId = "9021000142652708"
@@ -16,19 +16,19 @@ const (
 
 func init() {
 	var err error
-	client, err = alipay.New(kAppId, kPrivateKey, false) // false表示使用沙盒环境
+	Client, err = alipay.New(kAppId, kPrivateKey, false) // false表示使用沙盒环境
 	if err != nil {
 		panic(err)
 	}
 
 	// 加载证书
-	if err = client.LoadAppCertPublicKeyFromFile("appPublicCert.crt"); err != nil {
+	if err = Client.LoadAppCertPublicKeyFromFile("appPublicCert.crt"); err != nil {
 		panic(err)
 	}
-	if err = client.LoadAliPayRootCertFromFile("alipayRootCert.crt"); err != nil {
+	if err = Client.LoadAliPayRootCertFromFile("alipayRootCert.crt"); err != nil {
 		panic(err)
 	}
-	if err = client.LoadAlipayCertPublicKeyFromFile("alipayPublicCert.crt"); err != nil {
+	if err = Client.LoadAlipayCertPublicKeyFromFile("alipayPublicCert.crt"); err != nil {
 		panic(err)
 	}
 }

@@ -2,12 +2,12 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/kasiforce/trade/pkg/ctl"
 	"github.com/kasiforce/trade/pkg/util"
 	"github.com/kasiforce/trade/repository/db/dao"
 	"github.com/kasiforce/trade/service/pay"
 	"github.com/kasiforce/trade/types"
 	"github.com/smartwalle/alipay/v3"
-	"github.com/smartwalle/xid"
 	"net/http"
 	"strconv"
 )
@@ -62,7 +62,7 @@ func AlipayHandler(c *gin.Context) {
 	p.ProductCode = "FAST_INSTANT_TRADE_PAY"
 
 	// 获取支付链接
-	url, err := client.TradePagePay(p)
+	url, err := pay.Client.TradePagePay(p)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code": 0,
@@ -94,7 +94,7 @@ func AlipayNotifyHandler(c *gin.Context) {
 	}
 
 	// 验证签名
-	if err := client.VerifySign(c.Request.Form); err != nil {
+	if err := pay.Client.VerifySign(c.Request.Form); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": 0,
 			"msg":  "invalid signature",
@@ -116,8 +116,8 @@ func AlipayNotifyHandler(c *gin.Context) {
 			ID:     orderID,
 			Status: "未发货",
 		}
-		u := dao.NewTradeRecords(ctx)
-		resp, err = u.UpdateOrderStatus(req)
+		u := dao.NewTradeRecords(c)
+		resp, err := u.UpdateOrderStatus(req)
 		if err != nil {
 			util.LogrusObj.Error(err)
 			return
@@ -126,5 +126,5 @@ func AlipayNotifyHandler(c *gin.Context) {
 	}
 
 	// 返回支付宝成功响应
-	c.String(http.StatusOK, "success")
+	c.JSON(http.StatusOK, ctl.RespSuccess(c, resp))
 }
