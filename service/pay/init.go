@@ -22,13 +22,13 @@ func InitAlipay() {
 	}
 
 	// 加载证书
-	if err = Client.LoadAppCertPublicKeyFromFile("appPublicCert.crt"); err != nil {
+	if err = Client.LoadAppCertPublicKeyFromFile("service/pay/appPublicCert.crt"); err != nil {
 		panic(err)
 	}
-	if err = Client.LoadAliPayRootCertFromFile("alipayRootCert.crt"); err != nil {
+	if err = Client.LoadAliPayRootCertFromFile("service/pay/alipayRootCert.crt"); err != nil {
 		panic(err)
 	}
-	if err = Client.LoadAlipayCertPublicKeyFromFile("alipayPublicCert.crt"); err != nil {
+	if err = Client.LoadAlipayCertPublicKeyFromFile("service/pay/alipayPublicCert.crt"); err != nil {
 		panic(err)
 	}
 }
