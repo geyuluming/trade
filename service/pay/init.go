@@ -1,12 +1,7 @@
 package pay
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/kasiforce/trade/pkg/util"
-	"github.com/kasiforce/trade/repository/db/dao"
 	"github.com/smartwalle/alipay/v3"
-	"net/http"
-	"strconv"
 )
 
 var client *alipay.Client
@@ -36,4 +31,8 @@ func init() {
 	if err = client.LoadAlipayCertPublicKeyFromFile("alipayPublicCert.crt"); err != nil {
 		panic(err)
 	}
+}
+
+func GetServerDomain() string {
+	return kServerDomain
 }
