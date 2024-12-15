@@ -288,11 +288,15 @@ func (c *TradeRecords) CreateOrder(req types.CreateOrderReq, id int) (resp inter
 	// 处理 ShippingAddrID
 	if req.SenderAddrID != 0 {
 		order.ShippingAddrID = req.SenderAddrID // 设置为实际值
+	} else {
+		order.ShippingAddrID = nil // 设置为 NULL
 	}
 
 	// 处理 DeliveryAddrID
 	if req.ShippingAddrID != 0 {
 		order.DeliveryAddrID = req.ShippingAddrID // 设置为实际值
+	} else {
+		order.DeliveryAddrID = nil // 设置为 NULL
 	}
 
 	switch req.DeliveryMethod {
