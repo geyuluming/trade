@@ -124,7 +124,13 @@ func SSEAnnouncementsHandler() gin.HandlerFunc {
 				}
 
 				data, _ := resp.(*types.AnnouncementListResp)
-				for _, announcement := range data.AnnouncementList {
+				// 只处理最新的3条公告
+				announcements := data.AnnouncementList
+				if len(announcements) > 3 {
+					announcements = announcements[:3]
+				}
+
+				for _, announcement := range announcements {
 					event := fmt.Sprintf("data: %v\n\n", announcement)
 					_, err := c.Writer.WriteString(event)
 					if err != nil {
