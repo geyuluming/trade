@@ -8,6 +8,7 @@ import (
 	"github.com/kasiforce/trade/service"
 	"github.com/kasiforce/trade/types"
 	"net/http"
+	"sort"
 	"strconv"
 	"time"
 )
@@ -98,7 +99,7 @@ func DeleteAnnouncementHandler() gin.HandlerFunc {
 	}
 }
 
-// SSEAnnouncementsHandler 使用 SSE 推送公告
+// / SSEAnnouncementsHandler 使用 SSE 推送公告
 func SSEAnnouncementsHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Header("Content-Type", "text/event-stream")
@@ -115,7 +116,7 @@ func SSEAnnouncementsHandler() gin.HandlerFunc {
 				s := service.GetAnnouncementService()
 				req := types.ShowAnnouncementsReq{
 					PageNum:  1,
-					PageSize: 10,
+					PageSize: 10, // 假设获取10条，然后从中筛选最新的3条
 				}
 				resp, err := s.ShowAllAnnouncements(c, req)
 				if err != nil {
@@ -124,6 +125,12 @@ func SSEAnnouncementsHandler() gin.HandlerFunc {
 				}
 
 				data, _ := resp.(*types.AnnouncementListResp)
+				// 确保公告列表是按 anTime 降序排列的
+				sort.Slice(data.AnnouncementList, func(i, j int) bool {
+					// 假设 Announcement 结构体中有一个字段 anTime 表示创建时间
+					return data.AnnouncementList[i].AnTime.After(data.AnnouncementList[j].AnTime)
+				})
+
 				// 只处理最新的3条公告
 				announcements := data.AnnouncementList
 				if len(announcements) > 3 {
