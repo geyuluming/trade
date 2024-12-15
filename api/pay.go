@@ -72,14 +72,6 @@ func AlipayHandler(c *gin.Context) {
 		return
 	}
 	c.Redirect(http.StatusTemporaryRedirect, url.String())
-	// 返回支付链接
-	c.JSON(http.StatusOK, gin.H{
-		"code": 1,
-		"msg":  "success",
-		//"data": gin.H{
-		//	//"alipayURL": url.String(),
-		//},
-	})
 }
 
 func AlipayNotifyHandler(c *gin.Context) {
