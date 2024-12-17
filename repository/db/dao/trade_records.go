@@ -331,8 +331,15 @@ func (c *TradeRecords) CreateOrder(req types.CreateOrderReq, id int) (resp inter
 
 		// 如果状态还是“未付款”，则修改为“已取消”
 		if updatedOrder.Status == "未付款" {
+			// 类型断言，将 resp 转换为 types.CreateOrderResp
+			respTyped, ok := resp.(types.CreateOrderResp)
+			if !ok {
+				log.Printf("Error: resp is not of type types.CreateOrderResp")
+				return
+			}
+
 			updateReq := types.UpdateOrderStatusReq{
-				ID:     resp.TradeID,
+				ID:     respTyped.TradeID, // 使用类型断言后的 TradeID
 				Status: "已取消",
 			}
 
