@@ -2,6 +2,7 @@ package dao
 
 import (
 	"context"
+	"github.com/kasiforce/trade/repository/db/dao"
 	"log"
 
 	//"errors"
@@ -314,8 +315,12 @@ func (c *TradeRecords) CreateOrder(req types.CreateOrderReq, id int) (resp inter
 		return
 	}
 
+	resp = types.CreateOrderResp{
+		TradeID: order.TradeID,
+	}
+
 	// 设置定时器，300秒后检查订单状态
-	time.AfterFunc(300*time.Second, func() {
+	time.AfterFunc(10*time.Second, func() {
 		// 查询订单状态
 		var updatedOrder model.TradeRecords
 		err := c.DB.First(&updatedOrder, order.TradeID).Error
@@ -327,18 +332,18 @@ func (c *TradeRecords) CreateOrder(req types.CreateOrderReq, id int) (resp inter
 
 		// 如果状态还是“未付款”，则修改为“已取消”
 		if updatedOrder.Status == "未付款" {
-			updatedOrder.Status = "已取消"
-			err := c.DB.Save(&updatedOrder).Error
+			updateReq := types.UpdateOrderStatusReq{
+				ID:     resp.TradeID,
+				Status: "已取消",
+			}
+
+			_, err := c.UpdateOrderStatus(updateReq)
 			if err != nil {
 				// 处理错误，例如记录日志
 				log.Printf("Error updating order status: %v", err)
 			}
 		}
 	})
-
-	resp = types.CreateOrderResp{
-		TradeID: order.TradeID,
-	}
 
 	return resp, nil
 }
