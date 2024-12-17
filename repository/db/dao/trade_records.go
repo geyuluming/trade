@@ -576,7 +576,7 @@ func (c *TradeRecords) GetOrderDetail(orderID int) (model.TradeRecords, error) {
 }
 
 // UpdateOrderStatusToUnshipped 更新订单状态为“未发货”
-func (c *TradeRecords) UpdateOrderStatusToUnshipped(tradeID int) error {
+func (c *TradeRecords) UpdateOrderStatusToUnshipped(req types.PaySuccessReq) error {
 	location := time.FixedZone("Asia/Shanghai", 8*60*60)
 
 	updateData := map[string]interface{}{
@@ -584,7 +584,7 @@ func (c *TradeRecords) UpdateOrderStatusToUnshipped(tradeID int) error {
 		"payTime": time.Now().In(location),
 	}
 
-	err := c.DB.Model(&model.TradeRecords{}).Where("tradeID = ? AND payTime IS NULL", tradeID).Updates(updateData).Error
+	err := c.DB.Model(&model.TradeRecords{}).Where("tradeID = ? AND payTime IS NULL", req.TradeID).Updates(updateData).Error
 	if err != nil {
 		util.LogrusObj.Error("Error updating order status:", err)
 		return err

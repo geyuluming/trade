@@ -177,7 +177,7 @@ func getDeliveryMethod(payMethod int) string {
 	}
 }
 
-func (s *Trade_recordsService) PaySuccess(ctx context.Context, req types.UpdateOrderStatusReq) (resp interface{}, err error) {
+func (s *Trade_recordsService) PaySuccess(ctx context.Context, req types.PaySuccessReq) (resp interface{}, err error) {
 	u := dao.NewTradeRecords(ctx)
 	err = u.UpdateOrderStatusToUnshipped(req)
 	if err != nil {
