@@ -319,7 +319,7 @@ func (c *TradeRecords) CreateOrder(req types.CreateOrderReq, id int) (resp inter
 	}
 
 	// 设置定时器，300秒后检查订单状态
-	time.AfterFunc(10*time.Second, func() {
+	time.AfterFunc(300*time.Second, func() {
 		// 查询订单状态
 		var updatedOrder model.TradeRecords
 		err := c.DB.First(&updatedOrder, order.TradeID).Error
