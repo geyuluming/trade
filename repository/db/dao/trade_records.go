@@ -2,7 +2,6 @@ package dao
 
 import (
 	"context"
-	"github.com/kasiforce/trade/repository/db/dao"
 	"log"
 
 	//"errors"
