@@ -203,7 +203,7 @@ func (c *TradeRecords) UpdateOrderStatus(req types.UpdateOrderStatusReq) (resp i
 			CTime:       time.Now(),
 			CStatus:     0,
 		}
-		err = c.DB.Create(&refundComplaint).Error
+		err = c.DB.Select("TradeID", "BuyerReason", "CTime", "CStatus").Create(&refundComplaint).Error
 		if err != nil {
 			return
 		}
