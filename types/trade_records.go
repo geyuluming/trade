@@ -99,27 +99,36 @@ type GetMyOrdersResp struct {
 
 // GetMyOrderInfo GetMyOrderInfo 表示订单信息
 type GetMyOrderInfo struct {
-	TradeID         int         `json:"tradeID"`         // 订单ID
-	SellerID        int         `json:"sellerID"`        // 卖家ID
-	SellerName      string      `json:"sellerName"`      // 卖家昵称
-	GoodsID         int         `json:"goodsID"`         // 商品ID
-	GoodsName       string      `json:"goodsName"`       // 商品名称
-	Price           float64     `json:"price"`           // 价格
-	DeliveryMethod  string      `json:"deliveryMethod"`  // 交易方式
-	ShippingCost    float64     `json:"shippingCost"`    // 运费
-	SenderAddress   AddressInfo `json:"senderAddress"`   // 发货地址
-	ShippingAddress AddressInfo `json:"shippingAddress"` // 收货地址
-	OrderTime       time.Time   `json:"orderTime"`       // 下单时间
-	PayTime         time.Time   `json:"payTime"`         // 支付时间
-	ShippingTime    time.Time   `json:"shippingTime"`    // 发货时间
-	TurnoverTime    time.Time   `json:"turnoverTime"`    // 成交时间
-	Status          string      `json:"status"`          // 订单状态
-	TrackingNumber  string      `json:"trackingNumber"`  //快递单号
+	TradeID         int          `json:"tradeID"`         // 订单ID
+	SellerID        int          `json:"sellerID"`        // 卖家ID
+	SellerName      string       `json:"sellerName"`      // 卖家昵称
+	GoodsID         int          `json:"goodsID"`         // 商品ID
+	GoodsName       string       `json:"goodsName"`       // 商品名称
+	Price           float64      `json:"price"`           // 价格
+	DeliveryMethod  string       `json:"deliveryMethod"`  // 交易方式
+	ShippingCost    float64      `json:"shippingCost"`    // 运费
+	SenderAddress   AddressInfo2 `json:"senderAddress"`   // 发货地址
+	ShippingAddress AddressInfo  `json:"shippingAddress"` // 收货地址
+	OrderTime       time.Time    `json:"orderTime"`       // 下单时间
+	PayTime         time.Time    `json:"payTime"`         // 支付时间
+	ShippingTime    time.Time    `json:"shippingTime"`    // 发货时间
+	TurnoverTime    time.Time    `json:"turnoverTime"`    // 成交时间
+	Status          string       `json:"status"`          // 订单状态
+	TrackingNumber  string       `json:"trackingNumber"`  //快递单号
 }
 
 // AddressInfo 表示地址信息
 type AddressInfo struct {
 	AddrID     int    `json:"addrID"`     // 地址ID
+	Province   string `json:"province"`   // 省
+	City       string `json:"city"`       // 市
+	Area       string `json:"area"`       // 区
+	DetailArea string `json:"detailArea"` // 详细地址
+	Tel        string `json:"tel"`        // 联系电话
+	Name       string `json:"name"`       // 联系人
+}
+
+type AddressInfo2 struct {
 	Province   string `json:"province"`   // 省
 	City       string `json:"city"`       // 市
 	Area       string `json:"area"`       // 区
