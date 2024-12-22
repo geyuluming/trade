@@ -470,7 +470,7 @@ func (c *TradeRecords) GetMyOrdersPurchased(req types.GetMyOrdersReq, id int) (r
 			Price:          order.Price,
 			DeliveryMethod: order.DeliveryMethod,
 			ShippingCost:   order.ShippingCost,
-			SenderAddress: types.AddressInfo{
+			SenderAddress: types.AddressInfo2{
 				Province:   order.ShippingProvince,
 				City:       order.ShippingCity,
 				Area:       order.ShippingArea,
@@ -587,7 +587,7 @@ func (c *TradeRecords) GetMySoldOrders(req types.GetMyOrdersReq, id int) (r []ty
 			Price:          order.Price,
 			DeliveryMethod: order.DeliveryMethod,
 			ShippingCost:   order.ShippingCost,
-			SenderAddress: types.AddressInfo{
+			SenderAddress: types.AddressInfo2{
 				Province:   order.ShippingProvince,
 				City:       order.ShippingCity,
 				Area:       order.ShippingArea,

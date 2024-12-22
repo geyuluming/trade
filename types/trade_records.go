@@ -128,6 +128,15 @@ type AddressInfo struct {
 	Name       string `json:"name"`       // 联系人
 }
 
+type AddressInfo2 struct {
+	Province   string `json:"province"`   // 省
+	City       string `json:"city"`       // 市
+	Area       string `json:"area"`       // 区
+	DetailArea string `json:"detailArea"` // 详细地址
+	Tel        string `json:"tel"`        // 联系电话
+	Name       string `json:"name"`       // 联系人
+}
+
 // GetOrderDetailReq 表示获取订单详情的请求
 type GetOrderDetailReq struct {
 	ID int `uri:"id" binding:"required"` // 订单id
