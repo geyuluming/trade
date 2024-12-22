@@ -409,6 +409,7 @@ func (c *TradeRecords) GetMyOrdersPurchased(req types.GetMyOrdersReq, id int) (r
 		ShippingCity       string
 		ShippingArea       string
 		ShippingDetailArea string
+		AddrID             int
 		DeliveryProvince   string
 		DeliveryCity       string
 		DeliveryArea       string
@@ -451,7 +452,8 @@ func (c *TradeRecords) GetMyOrdersPurchased(req types.GetMyOrdersReq, id int) (r
 			"trade_records.shippingTime as ShippingTime," +
 			"trade_records.turnoverTime as TurnoverTime," +
 			"trade_records.status as Status," +
-			"trade_records.trackingNumber as TrackingNumber").
+			"trade_records.trackingNumber as TrackingNumber," +
+			"trade_records.deliveryAddrID as AddrID").
 		Scan(&orders).Error
 
 	if err != nil {
@@ -468,7 +470,7 @@ func (c *TradeRecords) GetMyOrdersPurchased(req types.GetMyOrdersReq, id int) (r
 			Price:          order.Price,
 			DeliveryMethod: order.DeliveryMethod,
 			ShippingCost:   order.ShippingCost,
-			SenderAddress: types.AddressInfo{
+			SenderAddress: types.AddressInfo2{
 				Province:   order.ShippingProvince,
 				City:       order.ShippingCity,
 				Area:       order.ShippingArea,
@@ -477,6 +479,7 @@ func (c *TradeRecords) GetMyOrdersPurchased(req types.GetMyOrdersReq, id int) (r
 				Name:       order.ShippingName,
 			},
 			ShippingAddress: types.AddressInfo{
+				AddrID:     order.AddrID,
 				Province:   order.DeliveryProvince,
 				City:       order.DeliveryCity,
 				Area:       order.DeliveryArea,
@@ -537,6 +540,7 @@ func (c *TradeRecords) GetMySoldOrders(req types.GetMyOrdersReq, id int) (r []ty
 		DeliveryTel        string
 		DeliveryName       string
 		TrackingNumber     string
+		AddrID             int
 	}
 
 	err = query.Offset((req.Page - 1) * req.PageSize).Limit(req.PageSize).
@@ -565,7 +569,8 @@ func (c *TradeRecords) GetMySoldOrders(req types.GetMyOrdersReq, id int) (r []ty
 			"trade_records.shippingTime as ShippingTime," +
 			"trade_records.turnoverTime as TurnoverTime," +
 			"trade_records.status as Status," +
-			"trade_records.trackingNumber as TrackingNumber").
+			"trade_records.trackingNumber as TrackingNumber," +
+			"trade_records.deliveryAddrID as AddrID").
 		Scan(&orders).Error
 
 	if err != nil {
@@ -582,7 +587,7 @@ func (c *TradeRecords) GetMySoldOrders(req types.GetMyOrdersReq, id int) (r []ty
 			Price:          order.Price,
 			DeliveryMethod: order.DeliveryMethod,
 			ShippingCost:   order.ShippingCost,
-			SenderAddress: types.AddressInfo{
+			SenderAddress: types.AddressInfo2{
 				Province:   order.ShippingProvince,
 				City:       order.ShippingCity,
 				Area:       order.ShippingArea,
@@ -597,6 +602,7 @@ func (c *TradeRecords) GetMySoldOrders(req types.GetMyOrdersReq, id int) (r []ty
 				DetailArea: order.DeliveryDetailArea,
 				Tel:        order.DeliveryTel,
 				Name:       order.DeliveryName,
+				AddrID:     order.AddrID,
 			},
 			OrderTime:      order.OrderTime,
 			PayTime:        order.PayTime,
