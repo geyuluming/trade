@@ -56,7 +56,7 @@ func AlipayHandler(c *gin.Context) {
 
 	// 计算绝对超时时间（orderTime 加上5分钟）
 	orderTime := order.OrderTime // 假设 order.OrderTime 是 time.Time 类型
-	timeExpire := orderTime.Add(5 * time.Minute)
+	timeExpire := orderTime.Add(8*time.Hour+5 * time.Minute)
 	timeExpireStr := timeExpire.Format("2006-01-02 15:04:05")
 
 	// 生成支付宝支付请求
