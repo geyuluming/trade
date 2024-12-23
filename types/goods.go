@@ -63,8 +63,8 @@ type GoodsInfo4 struct {
 	Price          float64 `json:"price"`   // 价格
 	GoodsImages    string  `json:"picture"` // 商品图片
 	CategoryID     int     `json:"categoryID"`
-	SellerName     string  `json:"sellerName"`
-	SellerPic      string  `json:"sellerPic"`
+	UserName       string  `json:"sellerName"`
+	Picture        string  `json:"sellerPic"`
 	DeliveryMethod int     `json:"deliveryMethod"`
 }
 
