@@ -10,6 +10,7 @@ import (
 	"github.com/smartwalle/alipay/v3"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 // AlipayHandler 支付宝支付接口
@@ -52,6 +53,12 @@ func AlipayHandler(c *gin.Context) {
 		return
 	}
 	total := order.TurnoverAmount + order.ShippingCost
+
+	// 计算绝对超时时间（orderTime 加上5分钟）
+	orderTime := order.OrderTime // 假设 order.OrderTime 是 time.Time 类型
+	timeExpire := orderTime.Add(8*time.Hour + 5*time.Minute)
+	timeExpireStr := timeExpire.Format("2006-01-02 15:04:05")
+
 	// 生成支付宝支付请求
 	var p = alipay.TradePagePay{}
 	p.NotifyURL = pay.GetServerDomain() + "/alipay/notify" // 异步通知地址
@@ -60,6 +67,7 @@ func AlipayHandler(c *gin.Context) {
 	p.OutTradeNo = strconv.Itoa(order.TradeID)
 	p.TotalAmount = strconv.FormatFloat(total, 'f', 2, 64)
 	p.ProductCode = "FAST_INSTANT_TRADE_PAY"
+	p.TimeExpire = timeExpireStr // 设置绝对超时时间
 
 	// 获取支付链接
 	url, err := pay.Client.TradePagePay(p)
