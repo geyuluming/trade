@@ -60,7 +60,7 @@ func (g *Goods) AdminFindAll(req types.ShowAllGoodsReq) (goods []model.Goods, er
 // FindAll 查询所有商品
 func (g *Goods) FindAll(req types.ShowGoodsListReq) (goods []model.Goods, err error) {
 	db := g.DB
-	query := db.Table("goods").Select("goods.*, users.userName as sellername, users.picture as sellerPic")
+	query := db.Table("goods").Select("goods.*, users.userName as userName, users.picture as picture")
 	query = query.Joins("left join users on goods.userID = users.userID") // 关联 users 表
 
 	if req.SearchQuery != "" {
