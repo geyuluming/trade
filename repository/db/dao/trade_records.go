@@ -307,7 +307,7 @@ func (c *TradeRecords) CreateOrder(req types.CreateOrderReq, id int) (resp inter
 		GoodsID:        req.GoodsID,
 		TurnoverAmount: req.Price,
 		ShippingCost:   req.ShippingCost,
-		OrderTime:      time.Now().UTC(),
+		OrderTime:      time.Now(),
 		Status:         "未付款",
 		BuyerID:        id,
 	}
