@@ -28,6 +28,7 @@ type Goods struct {
 	IsStarred    bool    `gorm:"type:bool;not null;default:0;column:isStarred"`
 	AddrID       int     `gorm:"type:int;not null;default:0;column:addrID"`
 	Tel          string  `gorm:"type:string;not null;default:0;column:tel"`
+	Picture      string  `gorm:"type:varchar(256);column:picture"`
 }
 
 func (Goods) TableName() string {

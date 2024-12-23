@@ -46,7 +46,8 @@ func (g *Goods) AdminFindAll(req types.ShowAllGoodsReq) (goods []model.Goods, er
 		Joins("LEFT JOIN address ON goods.addrID = address.addrID").
 		Joins("LEFT JOIN collection ON goods.goodsID = collection.goodsID").
 		Joins("LEFT JOIN trade_records ON trade_records.goodsID = goods.goodsID").
-		Group("goods.goodsID, goods.goodsName, goods.userID, goods.price, category.categoryName, goods.details, goods.isSold, goods.goodsImages, goods.createdTime, users.userName, address.province, address.city, address.districts, address.address")
+		Group("goods.goodsID, goods.goodsName, goods.userID, goods.price, category.categoryName, goods.details, goods.isSold, goods.goodsImages, goods.createdTime, users.userName, address.province, address.city, address.districts, address.address").
+		Order("goods.createdTime DESC") // 按 createdTime 倒序
 	if req.SearchQuery != "" {
 		query = query.Where("goods.goodsID = ?", req.SearchQuery)
 	}
@@ -59,7 +60,9 @@ func (g *Goods) AdminFindAll(req types.ShowAllGoodsReq) (goods []model.Goods, er
 // FindAll 查询所有商品
 func (g *Goods) FindAll(req types.ShowGoodsListReq) (goods []model.Goods, err error) {
 	db := g.DB
-	query := db.Table("goods").Select("goods.*")
+	query := db.Table("goods").Select("goods.*, users.userName as userName, users.picture as picture")
+	query = query.Joins("left join users on goods.userID = users.userID") // 关联 users 表
+
 	if req.SearchQuery != "" {
 		query = query.Where("goods.goodsName LIKE ?", "%"+req.SearchQuery+"%")
 	}
@@ -74,6 +77,8 @@ func (g *Goods) FindAll(req types.ShowGoodsListReq) (goods []model.Goods, err er
 	}
 	// 添加 issold 不等于 1 的条件
 	query = query.Where("goods.isSold != ?", 1)
+	// 按 createdTime 倒序排列
+	query = query.Order("goods.createdTime DESC")
 	query = query.Limit(req.Limit).Offset((req.Page - 1) * req.Limit)
 	err = query.Find(&goods).Error
 	return

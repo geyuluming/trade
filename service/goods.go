@@ -185,11 +185,14 @@ func (s *GoodsService) ShowGoodsList(ctx context.Context, req types.ShowGoodsLis
 	var respList []types.GoodsInfo4
 	for _, goodsInfo := range goodsList {
 		respList = append(respList, types.GoodsInfo4{
-			GoodsID:     goodsInfo.GoodsID,
-			GoodsName:   goodsInfo.GoodsName,
-			Price:       goodsInfo.Price,
-			CategoryID:  goodsInfo.CategoryID,
-			GoodsImages: goodsInfo.GoodsImages,
+			GoodsID:        goodsInfo.GoodsID,
+			GoodsName:      goodsInfo.GoodsName,
+			Price:          goodsInfo.Price,
+			CategoryID:     goodsInfo.CategoryID,
+			GoodsImages:    goodsInfo.GoodsImages,
+			UserName:       goodsInfo.UserName,
+			Picture:        goodsInfo.Picture,
+			DeliveryMethod: goodsInfo.DeliveryMethod,
 		})
 	}
 	return respList, nil
