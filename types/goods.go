@@ -58,11 +58,14 @@ type GoodsInfo3 struct {
 
 // 商品列表 5
 type GoodsInfo4 struct {
-	GoodsID     int     `json:"id"`      // 商品ID
-	GoodsName   string  `json:"name"`    // 商品名称
-	Price       float64 `json:"price"`   // 价格
-	GoodsImages string  `json:"picture"` // 商品图片
-	CategoryID  int     `json:"categoryID"`
+	GoodsID        int     `json:"id"`      // 商品ID
+	GoodsName      string  `json:"name"`    // 商品名称
+	Price          float64 `json:"price"`   // 价格
+	GoodsImages    string  `json:"picture"` // 商品图片
+	CategoryID     int     `json:"categoryID"`
+	SellerName     string  `json:"sellerName"`
+	SellerPic      string  `json:"sellerPic"`
+	DeliveryMethod int     `json:"deliveryMethod"`
 }
 
 type GoodsListResp struct {
